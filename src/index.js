@@ -14,6 +14,7 @@ import axios from "axios";
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 axios.defaults.baseURL = "https://backanimals-production.up.railway.app";
+// axios.defaults.baseURL = "http://localhost3001/";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,7 +23,7 @@ root.render(
 		domain={domain}
 		clientId={clientID}
 		authorizationParams={{
-			redirect_uri: "https://backanimals-production.up.railway.app/createAuth0",
+			redirect_uri: "httplocalhost3000/createAuth0",
 			audience: "http://animales.com",
 		}}>
 		<Provider store={store}>
