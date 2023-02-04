@@ -14,7 +14,6 @@ import Pagination from "../Pagination/Pagination";
 const Adoption = () => {
 	const pets = useSelector((state) => state.pets);
 	const actualPage = useSelector((state) => state.actualPage);
-	console.log(FilterBarAdoption, useSelector);
 
 	const dispatch = useDispatch();
 
@@ -27,7 +26,7 @@ const Adoption = () => {
 	const lastIndex = actualPage * PetPerPage;
 	const firstIndex = lastIndex - PetPerPage;
 	const currentPetPerPage = pets.slice(firstIndex, lastIndex);
-
+	console.log(FilterBarAdoption, useSelector);
 	return (
 		<>
 			<Navbar />
