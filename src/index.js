@@ -23,8 +23,7 @@ root.render(
 		domain={domain}
 		clientId={clientID}
 		authorizationParams={{
-			redirect_uri: "httplocalhost3000/createAuth0",
-			audience: "http://animales.com",
+			redirect_uri: "https://buddyong.vercel.app/createAuth0",
 		}}>
 		<Provider store={store}>
 			<BrowserRouter>
