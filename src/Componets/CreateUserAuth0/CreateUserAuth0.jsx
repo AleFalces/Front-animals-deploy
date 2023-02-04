@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link, redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { postUser } from "../../Redux/Actions";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -8,7 +7,7 @@ import axios from "axios";
 
 export default function CreateUserAuth0() {
 	const dispatch = useDispatch();
-	const { user, isAuthenticated } = useAuth0();
+	const { user } = useAuth0();
 	const navegate = useNavigate();
 
 	const [logUser, setlogUser] = useState([]);

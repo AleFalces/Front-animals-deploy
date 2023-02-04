@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Link, redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { postPet } from "../../Redux/Actions";
 import { MdArrowBackIosNew } from "react-icons/md";
 import Navbar from "../Navbar/Navbar";
@@ -18,7 +18,6 @@ import {
 	Button,
 	Heading,
 	Text,
-	useColorModeValue,
 	Icon,
 	/*  Link, */
 	Select,

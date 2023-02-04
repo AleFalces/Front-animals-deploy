@@ -11,7 +11,7 @@ const NotFound = () => {
 
 	useEffect(() => {
 		redirect();
-	}, []);
+	}, [redirect]);
 	return (
 		<div>
 			<Navbar />

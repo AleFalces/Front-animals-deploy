@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { GiSittingDog } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
 	Box,
 	Flex,
@@ -30,7 +30,7 @@ export default function Simple() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { user, isAuthenticated, logout } = useAuth0();
 	const [usuario, setUsuario] = useState([]);
-	const navegate = useNavigate();
+
 	useEffect(() => {
 		const loggedUser = localStorage.getItem("loggedUser");
 		if (loggedUser) {

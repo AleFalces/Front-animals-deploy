@@ -29,10 +29,10 @@ import {
 	ACTUAL_PAGE,
 	UPDATE_PRODUCT,
 	MODIFY_PRODUCT,
-	OUT_OF_STOCK,
+
 	// SET_STATUS_USER,
 } from "../ActionTypes";
-import { HOST, header } from "../../utils";
+import { header } from "../../utils";
 import axios from "axios";
 
 export function getAllUsers() {
@@ -108,6 +108,7 @@ export function postPet(formInput, token) {
 		try {
 			const config = header(token);
 			const json = await axios.post(`/pets`, formInput, config);
+			console.log(json);
 			return dispatch({
 				type: POST_PET,
 			});
@@ -121,6 +122,7 @@ export function postUser(formInput) {
 	return async function (dispatch) {
 		try {
 			const newUser = await axios.post(`/users`, formInput);
+			console.log(newUser);
 			return dispatch({
 				type: POST_USER,
 			});
@@ -134,6 +136,7 @@ export function postProduct(formInput) {
 	return async function (dispatch) {
 		try {
 			const newProduct = await axios.post(`/products`, formInput);
+			console.log(newProduct);
 			return dispatch({
 				type: POST_PRODUCT,
 			});
@@ -147,6 +150,7 @@ export function postVet(formInput) {
 	return async function (dispatch) {
 		try {
 			const newVet = await axios.post(`$/veterinary`, formInput);
+			console.log(newVet);
 			return dispatch({
 				type: POST_VET,
 			});
