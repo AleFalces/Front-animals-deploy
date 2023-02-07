@@ -49,7 +49,8 @@ export default function Simple() {
 
 	const cerrarSesion = () => {
 		localStorage.removeItem("loggedUser");
-		logout({ returnTo: "/" });
+		navigate("https://buddyong.vercel.app");
+		logout();
 	};
 	const userPhone = (e) => {
 		e.preventDefault();
