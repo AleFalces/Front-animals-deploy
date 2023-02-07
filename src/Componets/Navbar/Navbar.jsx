@@ -50,6 +50,7 @@ export default function Simple() {
 	const cerrarSesion = () => {
 		localStorage.removeItem("loggedUser");
 		logout();
+		navigate("/");
 	};
 	const userPhone = (e) => {
 		e.preventDefault();
