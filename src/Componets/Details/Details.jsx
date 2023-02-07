@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { petDetails } from "../../Redux/Actions/index";
 /* import "./Detail.css"; */
 
+// import { extendTheme } from "@chakra-ui/react";
+
 import {
 	Box,
 	Heading,
@@ -31,7 +33,6 @@ import { PhoneIcon, CheckIcon } from "@chakra-ui/icons";
 
 const messages = [
 	"Asegúrate de tener suficiente espacio y tiempo para dedicar al cuidado del animal.",
-	"Adopción de un animal de compañía conlleva costos relacionados con alimentación, atención veterinaria, juguetes, etc.",
 	" Debes estar dispuesto a asumir la gran responsabilidad de cuidar y brindar amor a un animal por el resto de su vida.",
 	"Compatibilidad con tu estilo de vida: Considera si tu horario de trabajo, viajes, etc. son compatibles con el cuidado de un animal.",
 	"Preparación para la llegada: Prepara tu hogar para la llegada del animal, con un lugar cómodo para dormir, juguetes y alimentación adecuada.",
@@ -39,7 +40,6 @@ const messages = [
 
 const titulo = [
 	"Espacio y tiempo disponible",
-	"Costos asociados",
 	"Responsabilidades a largo plazo",
 	"Compatibilidad con tu estilo de vida",
 	"Preparación para la llegada",
@@ -61,13 +61,13 @@ const Details = () => {
 
 	useEffect(() => {
 		dispatch(petDetails(paramsId));
-	}, [dispatch]);
+	}, [dispatch, paramsId]);
 
 	return (
 		<div className="detailContainer">
 			<Navbar />
 			{window.scrollTo(0, 0)}
-			<Box bg="brand.green.200" mt="1rem" pb={["1rem", "2rem", "2rem"]}>
+			<Box bg="brand.green.200" pb={["1rem", "2rem", "2rem"]}>
 				<SimpleGrid columns={[1, 1, 2, 2]} spacing={["10px", "10px", "30px"]}>
 					{/* Info1 Titulos*/}
 					<Center w="100%" h="100%">
@@ -163,18 +163,19 @@ const Details = () => {
 							</Heading>
 
 							{/* DETAIL */}
-							<Text
-								fontFamily={"body"}
-								fontWeight={"300"}
-								noOfLines={[4, 4, 3]}
-								px="1rem"
-								py={["2rem", "1rem", "2rem"]}
-								my="0rem"
-								fontSize={{ base: "14px", md: "18px", lg: "20px" }}
-								color="gray.500">
-								{Det.detail}
-							</Text>
-
+							<Container>
+								<Text
+									fontFamily={"body"}
+									fontWeight={"300"}
+									/* noOfLines={[4, 4, 3]} */
+									px="1rem"
+									py={["2rem", "1rem", "2rem"]}
+									my="0rem"
+									fontSize={{ base: "14px", md: "18px", lg: "20px" }}
+									color="gray.500">
+									{Det.detail}
+								</Text>
+							</Container>
 							{/* AGE */}
 							<Text
 								noOfLines={[1, 2, 3]}
@@ -252,7 +253,9 @@ const Details = () => {
 						</Box>
 					</Center>
 				</SimpleGrid>
-				<Box p={4} pt="7rem">
+
+				{/* Adoption Tips */}
+				<Box p={4} pt="3rem" bg="white" mt="6rem" pb="4rem">
 					<Stack spacing={4} as={Container} maxW={"3xl"} textAlign={"center"}>
 						<Heading fontSize={"3xl"}>
 							Antes de adoptar, tené en cuenta estos consejos
@@ -282,7 +285,7 @@ const Details = () => {
 					</Container>
 				</Box>
 			</Box>
-			<Footer></Footer>
+			<Footer />
 		</div>
 	);
 };

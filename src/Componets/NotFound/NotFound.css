@@ -1,61 +1,59 @@
-
 .div-size {
-    width: 100%;
-    height: 1000px;
-    margin-bottom: 100px;
+	width: 100%;
+	height: 1000px;
+	margin-bottom: 100px;
 }
 
-.textDecorate{
-    margin-top: 100px;
+.textDecorate {
+	margin-top: 100px;
 }
 
 .footerPlace {
-    margin-top: 270px;
+	margin-top: 270px;
 }
 
 .error-container {
 	text-align: center;
 	font-size: 180px;
-	font-family: 'Catamaran', sans-serif;
+	font-family: "Catamaran", sans-serif;
 	font-weight: 800;
 	margin: 20px 15px;
 }
 
 .error-container > span {
-    display: inline-block;
-    line-height: 0.7;
-    position: relative;
-    color: #ad92dfea;
+	display: inline-block;
+	line-height: 0.7;
+	position: relative;
+	color: #ad92dfea;
 }
 
 .error-container > span > span {
-    display: inline-block;
-    position: relative;
+	display: inline-block;
+	position: relative;
 }
 
 .error-container > span:nth-of-type(1) > span {
-    perspective: 1000px;
-    perspective-origin: 500% 50%;
-    color: #98b2da
-
+	perspective: 1000px;
+	perspective-origin: 500% 50%;
+	color: #98b2da;
 }
 
 .error-container > span:nth-of-type(1) > span {
-    transform-origin: 50% 100% 0px;
-    transform: rotate(0);
-    animation: easyoutelastic 8s infinite;
+	transform-origin: 50% 100% 0px;
+	transform: rotate(0);
+	animation: easyoutelastic 8s infinite;
 }
 
 .error-container > span:nth-of-type(3) {
-    perspective: none;
-    perspective-origin: 50% 50%;
-    color: #ee77c0c6;
+	perspective: none;
+	perspective-origin: 50% 50%;
+	color: #ee77c0c6;
 }
 
 .error-container > span:nth-of-type(3) > span {
-    transform-origin: 100% 100% 0px;
-    transform:  rotate(0deg);
-    animation: rotatedrop 8s infinite;
+	transform-origin: 100% 100% 0px;
+	transform: rotate(0deg);
+	animation: rotatedrop 8s infinite;
 }
 
 @keyframes easyoutelastic {

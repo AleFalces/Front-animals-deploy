@@ -7,7 +7,7 @@ import Card from "../Card/Card";
 import { getLostPets } from "../../Redux/Actions/index";
 import { Link } from "react-router-dom";
 import "../Adoption/Cards.css";
-import { SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import Pagination from "../Pagination/Pagination";
 
 const LostPets = () => {

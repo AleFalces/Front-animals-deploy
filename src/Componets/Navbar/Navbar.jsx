@@ -3,7 +3,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { GiSittingDog } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 import React, { useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserId } from "../../Redux/Actions";
 import {
 	Box,
 	Flex,
@@ -27,9 +29,12 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
 export default function Simple() {
+	const dispatch = useDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { user, isAuthenticated, logout } = useAuth0();
 	const [usuario, setUsuario] = useState([]);
+	const navigate = useNavigate();
+	const userInfo = useSelector((state) => state.user);
 
 	useEffect(() => {
 		const loggedUser = localStorage.getItem("loggedUser");
@@ -38,11 +43,22 @@ export default function Simple() {
 			setUsuario(logged);
 		}
 	}, []);
+	useEffect(() => {
+		dispatch(getUserId(usuario[0]?.id)); //del localStorage me traigo la info del usuario, desde su posicion 0 de array, por eso le pregunto si tiene algo con el "?", si tiene algo dentro que me traiga su id
+	}, [dispatch, usuario]);
 
 	const cerrarSesion = () => {
-		logout({ returnTo: "/" });
 		localStorage.removeItem("loggedUser");
-		// navegate("/");
+		logout({ returnTo: "/" });
+	};
+	const userPhone = (e) => {
+		e.preventDefault();
+		if (userInfo[0]?.phone === "123456789") {
+			navigate("/updateUser");
+			alert("Actualiza tu telefono para publicar");
+		} else {
+			navigate("/createPet");
+		}
 	};
 
 	return (
@@ -111,6 +127,7 @@ export default function Simple() {
 								<Text fontFamily={"body"}>Tienda</Text>
 							</NavLink>
 							<NavLink
+								onClick={(e) => userPhone(e)}
 								px={2}
 								py={1}
 								rounded={"md"}
@@ -183,7 +200,9 @@ export default function Simple() {
 								{usuario.length ? (
 									<MenuList>
 										<MenuItem>Perfil</MenuItem>
-										<MenuItem>Mis mascotas</MenuItem>
+										<NavLink to="/myPets">
+											<MenuItem>Mis mascotas</MenuItem>
+										</NavLink>
 										<MenuItem onClick={() => cerrarSesion()}>
 											{" "}
 											Cerrar Sesión
@@ -199,10 +218,39 @@ export default function Simple() {
 
 				{isOpen ? (
 					<Box pb={4} display={{ md: "none" }}>
-						<Stack as={"nav"} spacing={4}>
-							{/* {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))} */}
+						<Stack as={"nav"} p={4} spacing={4} alignItems={"center"}>
+							<NavLink to="/aboutUs">
+								<Text fontFamily={"body"}>Nosotros</Text>
+							</NavLink>
+							<NavLink to="/donate">
+								<Text fontFamily={"body"}>Donaciones</Text>
+							</NavLink>
+							<NavLink to="/shop">
+								<Text fontFamily={"body"}>Tienda</Text>
+							</NavLink>
+							<NavLink to="/createPet">
+								<Text fontFamily={"body"}>Publicar Mascota</Text>
+							</NavLink>
+							<NavLink to="/veterinary">
+								<Text fontFamily={"body"}>Veterinarias</Text>
+							</NavLink>
+							<Menu>
+								<MenuButton>
+									<GiSittingDog size="20px" />
+								</MenuButton>
+								<MenuList>
+									<MenuItem>
+										<NavLink to="/adoptions">
+											<Text fontFamily={"body"}>Adopcion</Text>
+										</NavLink>
+									</MenuItem>
+									<MenuItem>
+										<NavLink to="/lostPets">
+											<Text fontFamily={"body"}>Perdidos</Text>
+										</NavLink>
+									</MenuItem>
+								</MenuList>
+							</Menu>
 						</Stack>
 					</Box>
 				) : null}

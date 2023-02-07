@@ -1,36 +1,31 @@
 import {
-	GET_ALL_PETS,
+	GET_PETS,
 	GET_ADOPTION_PETS,
 	GET_LOST_PETS,
 	GET_PET_ID,
 	GET_ALL_USERS,
+	GET_USER_ID,
 	GET_ALL_PRODUCTS,
 	GET_PRODUCT_DETAIL,
 	GET_VETERINARIES,
 	GET_DETAILS_VETERINARIES,
 	POST_PET,
+	UPDATE_PET,
 	POST_USER,
 	POST_PRODUCT,
 	POST_VET,
-	FILTER_SPECIE_ADOPTION,
-	FILTER_SEX_ADOPTION,
-	FILTER_AGE_ADOPTION,
-	FILTER_SIZE_ADOPTION,
-	FILTER_BY_SEARCH_AREA_ADOPTION,
-	FILTER_SPECIE_LOST,
-	FILTER_LOST_SEX,
-	FILTER_LOST_AGE,
-	FILTER_LOST_SIZE,
+	FILTER_ADOPTION_VALUES,
+	FILTER_BY_SEARCH_AREA,
 	SHOP_SEARCH_INPUT_NAME,
 	SHOP_FILTER_VALUE,
-	FILTER_LOST_SEARCH_AREA,
 	NEXT_PAGE,
 	PREV_PAGE,
 	ACTUAL_PAGE,
 	UPDATE_PRODUCT,
+	UPDATE_USER,
 	MODIFY_PRODUCT,
-
-	// SET_STATUS_USER,
+	SET_IMAGE,
+	DELETE_PET,
 } from "../ActionTypes";
 import { header } from "../../utils";
 import axios from "axios";
@@ -49,14 +44,57 @@ export function getAllUsers() {
 	};
 }
 
-export function getAllPets() {
+export function getPets(value) {
 	return async function (dispatch) {
 		try {
-			const json = await axios.get("/pets");
-			return dispatch({
-				type: GET_ALL_PETS,
-				payload: json.data,
-			});
+			if (value === undefined) {
+				const json = await axios.get(`/pets`);
+				const payload = {
+					allPets: json.data,
+					value,
+				};
+				return dispatch({
+					type: GET_PETS,
+					payload,
+				});
+			}
+			if (value === "lostPets") {
+				const json = await axios.get(`/pets`);
+				const lostPets = json.data.filter((pet) => pet.status === "perdido");
+				const payload = {
+					lostPets,
+					value,
+				};
+				return dispatch({
+					type: GET_PETS,
+					payload,
+				});
+			}
+			if (value === "adoptions") {
+				const json = await axios.get(`/pets`);
+				const adoptionPets = json.data.filter(
+					(pet) => pet.status === "encontrado"
+				);
+				const payload = {
+					adoptionPets,
+					value,
+				};
+				return dispatch({
+					type: GET_PETS,
+					payload,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}
+
+export function getUserId(id) {
+	return async function (dispatch) {
+		try {
+			const json = await axios.get(`/users/${id}`);
+			return dispatch({ type: GET_USER_ID, payload: json.data });
 		} catch (error) {
 			console.log(error);
 		}
@@ -108,7 +146,6 @@ export function postPet(formInput, token) {
 		try {
 			const config = header(token);
 			const json = await axios.post(`/pets`, formInput, config);
-			console.log(json);
 			return dispatch({
 				type: POST_PET,
 			});
@@ -122,9 +159,23 @@ export function postUser(formInput) {
 	return async function (dispatch) {
 		try {
 			const newUser = await axios.post(`/users`, formInput);
-			console.log(newUser);
 			return dispatch({
 				type: POST_USER,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}
+
+export function updateUser(id, formInput) {
+	return async function (dispatch) {
+		try {
+			console.log("Action updateUSER", id);
+			await axios.put(`/users/${id}`, formInput);
+			// const updatedProduct = await axios.get(`/products`)
+			dispatch({
+				type: UPDATE_USER,
 			});
 		} catch (error) {
 			console.log(error);
@@ -136,7 +187,6 @@ export function postProduct(formInput) {
 	return async function (dispatch) {
 		try {
 			const newProduct = await axios.post(`/products`, formInput);
-			console.log(newProduct);
 			return dispatch({
 				type: POST_PRODUCT,
 			});
@@ -149,8 +199,7 @@ export function postProduct(formInput) {
 export function postVet(formInput) {
 	return async function (dispatch) {
 		try {
-			const newVet = await axios.post(`$/veterinary`, formInput);
-			console.log(newVet);
+			const newVet = await axios.post(`/veterinary`, formInput);
 			return dispatch({
 				type: POST_VET,
 			});
@@ -159,13 +208,16 @@ export function postVet(formInput) {
 		}
 	};
 }
-
-export function filterBySpecie(value) {
+export function filterAdoptionPets(arrayFilterValues, value) {
 	return async function (dispatch) {
 		try {
-			return dispatch({
-				type: FILTER_SPECIE_ADOPTION,
-				payload: value,
+			const payload = {
+				arrayFilterValues,
+				value,
+			};
+			dispatch({
+				type: FILTER_ADOPTION_VALUES,
+				payload: payload,
 			});
 		} catch (error) {
 			console.log(error);
@@ -173,103 +225,16 @@ export function filterBySpecie(value) {
 	};
 }
 
-export function filterBySex(value) {
+export function filterBySearchArea(inputValue, value) {
 	return async function (dispatch) {
 		try {
+			let payload = {
+				inputValue,
+				value,
+			};
 			return dispatch({
-				type: FILTER_SEX_ADOPTION,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterByAge(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_AGE_ADOPTION,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterBySize(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_SIZE_ADOPTION,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterBySearchArea(inputValue) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_BY_SEARCH_AREA_ADOPTION,
-				payload: inputValue,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterLostSpecies(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_SPECIE_LOST,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterLostSex(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_LOST_SEX,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterLostAge(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_LOST_AGE,
-				payload: value,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-export function filterLostSize(value) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_LOST_SIZE,
-				payload: value,
+				type: FILTER_BY_SEARCH_AREA,
+				payload: payload,
 			});
 		} catch (error) {
 			console.log(error);
@@ -313,18 +278,6 @@ export function shopSearchInputName(input) {
 			return dispatch({
 				type: SHOP_SEARCH_INPUT_NAME,
 				payload: input,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-export function filterLostSearchArea(inputValue) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: FILTER_LOST_SEARCH_AREA,
-				payload: inputValue,
 			});
 		} catch (error) {
 			console.log(error);
@@ -425,7 +378,7 @@ export function updateProduct(id, formInput) {
 		try {
 			console.log("Action updateProduc", id);
 			await axios.put(`/products/${id}`, formInput);
-			// const updatedProduct = await axios.get(`${HOST}/products`)
+			// const updatedProduct = await axios.get(`/products`)
 			dispatch({
 				type: UPDATE_PRODUCT,
 			});
@@ -449,17 +402,74 @@ export function modifyProduct(obj) {
 	};
 }
 
-// export function outOfStock(){
-//   return async function(dispatch){
-//     try {
-//       const allProducts = await axios.get(`${HOST}/products`)
-//       console.log(allProducts.data)
-//       return dispatch({
-//         type: OUT_OF_STOCK,
-//         payload: allProducts.data,
-//       })
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+export function postOrUpdatePet(formInput, value, petId) {
+	return async function (dispatch) {
+		try {
+			if (value === "update") {
+				console.log("ACTION CASO UPDATE");
+				console.log("FORM INPUT", formInput);
+				console.log("VALUE", value);
+				console.log("PETID", petId);
+				const userLocalstorage = JSON.parse(
+					localStorage.getItem("loggedUser")
+				)[0];
+				console.log("USERLOCALSTORAGE: ", userLocalstorage);
+				let json = await axios.put(`/pets/${petId}`, formInput);
+				return dispatch({
+					type: UPDATE_PET,
+				});
+			} else {
+				const userId = JSON.parse(localStorage.getItem("loggedUser"))[0].id;
+				console.log("USER ID ACTION CASO POST", userId);
+				formInput = { ...formInput, userId };
+				console.log("LOG ACTION CASO POST", formInput, value, petId);
+				let json = await axios.post(`/pets`, formInput);
+				console.log(formInput, value, petId);
+				return dispatch({
+					type: POST_PET,
+				});
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+}
+export function setImageAsync(obj) {
+	console.log("OBJJJ", obj);
+	return async function (dispatch) {
+		try {
+			const files = obj;
+			const data = new FormData();
+			data.append("file", files[0]);
+			data.append("upload_preset", "buddycare");
+
+			const res = await fetch(
+				"https://api.cloudinary.com/v1_1/lucho123/image/upload/",
+				{
+					method: "POST",
+					body: data,
+				}
+			);
+			const file = await res.json();
+			console.log("SECURE_URL", file.url);
+			return dispatch({
+				type: SET_IMAGE,
+				payload: file.url,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}
+export function deletePet(id) {
+	return async function (dispatch) {
+		try {
+			const json = await axios.delete(`/${id}`);
+			return dispatch({
+				type: DELETE_PET,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}

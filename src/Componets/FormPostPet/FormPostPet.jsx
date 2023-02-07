@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { postPet } from "../../Redux/Actions";
+import { Link, redirect, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { petDetails, postOrUpdatePet, postPet } from "../../Redux/Actions";
 import { MdArrowBackIosNew } from "react-icons/md";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
@@ -18,6 +18,7 @@ import {
 	Button,
 	Heading,
 	Text,
+	useColorModeValue,
 	Icon,
 	/*  Link, */
 	Select,
@@ -26,19 +27,19 @@ import {
 const validateForm = (input) => {
 	let inputError = {};
 
-	if (input.species === "default" || !input.species.length) {
+	if (input.species === "" || !input.species.length) {
 		inputError.species = "Selecciona gato o perro";
 	}
-	if (input.sex === "default" || !input.sex.length) {
+	if (input.sex === "" || !input.sex.length) {
 		inputError.sex = `Selecciona macho o hembra`;
 	}
-	if (input.age === "default" || !input.age.length) {
+	if (input.age === "" || !input.age.length) {
 		inputError.age = "Edad aproximada de la mascota";
 	}
-	if (input.size === "default" || !input.size.length) {
+	if (input.size === "" || !input.size.length) {
 		inputError.size = "Selecciona un tamaño aproximado";
 	}
-	if (input.status === "default" || !input.status.length) {
+	if (input.status === "" || !input.status.length) {
 		inputError.status = "Selecciona un estado";
 	}
 	if (input.area.trim() === "" || !input.area.length) {
@@ -54,64 +55,46 @@ const validateForm = (input) => {
 	if (input.img === "") {
 		inputError.img = "Inserta el link de una imagen";
 	}
-	// if (input.userId.trim() === "") {
-	// 	inputError.userId = "Ingresa el UUID del usuario";
-	// }
 	return inputError;
 };
 
-export default function FormPostPet({ token }) {
-	/* let isIncomplete = true; */
+export default function FormPostPet({ value }) {
 	const dispatch = useDispatch();
-
-	useEffect(() => {}, []);
-
 	const [isIncomplete, setIsIncomplete] = useState(false);
 	const [infoSend, setInfoSend] = useState(false);
-
 	const [inputError, setInputError] = useState({});
+	const paramsId = useParams("id");
+	const petData = JSON.parse(localStorage.getItem("loggedUser"))[0].pet.filter(
+		(pet) => pet.id === paramsId.id
+	)[0];
 	const [input, setInput] = useState({
-		species: "",
-		sex: "",
-		age: "",
-		size: "",
-		status: "",
-		area: "",
-		detail: "",
-		img: "",
-		userId: "",
+		species: petData?.species || "",
+		sex: petData?.sex || "",
+		age: petData?.age || "",
+		size: petData?.size || "",
+		status: petData?.status || "",
+		area: petData?.area || "",
+		detail: petData?.detail || "",
+		img: petData?.img || "",
 	});
-	const [usuario, setUsuario] = useState([]);
-	useEffect(() => {
-		const loggedUser = localStorage.getItem("loggedUser");
-		if (loggedUser) {
-			const logged = JSON.parse(loggedUser);
-			setUsuario(logged);
-		}
-	}, []);
 
 	const handlerChange = (e) => {
 		setInput({
 			...input,
-			[e.target.name]: e.target.value.trim(),
-			userId: usuario[0]?.id,
+			[e.target.name]: e.target.value,
 		});
-		console.log("input", input);
-		console.log("inputError", inputError);
-
 		//control errores
+		console.log("INPUT ONCHANGE PET", input);
 		setInputError(
 			validateForm({
 				...input,
 				[e.target.name]: e.target.value,
 			})
 		);
+		console.log("CHANGE: INPUT", input);
 	};
-	console.log(input);
 	const handlerSubmit = (e) => {
 		e.preventDefault();
-		console.log(input);
-
 		if (
 			input.species &&
 			input.sex &&
@@ -122,20 +105,24 @@ export default function FormPostPet({ token }) {
 			input.detail &&
 			input.img !== ""
 		) {
-			dispatch(postPet(input));
-
-			//dispatch(postPet(input, token));
-			setIsIncomplete(false);
-			setInfoSend(true);
-
-			document.getElementById("myForm").reset();
+			if (value === undefined) {
+				dispatch(postOrUpdatePet(input, value));
+				setIsIncomplete(false);
+				setInfoSend(true);
+				document.getElementById("myForm").reset();
+			} else {
+				dispatch(postOrUpdatePet(input, value, paramsId.id));
+				setIsIncomplete(false);
+				setInfoSend(true);
+				document.getElementById("myForm").reset();
+			}
 		} else {
-			console.log(inputError);
 			setIsIncomplete(true);
 			setInfoSend(false);
 		}
 	};
 
+	useEffect(() => {}, []);
 	return (
 		<div>
 			<Navbar />
@@ -143,7 +130,7 @@ export default function FormPostPet({ token }) {
 			{isIncomplete ? <ErrorForm /> : null}
 			{infoSend ? <SuccedForm /> : null}
 
-			<form onSubmit={handlerSubmit} id="myForm">
+			<form onSubmit={(e) => handlerSubmit(e)} id="myForm">
 				<Flex
 					minH={"100vh"}
 					align={"center"}
@@ -151,18 +138,20 @@ export default function FormPostPet({ token }) {
 					bg="brand.green.200">
 					<Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
 						<Stack align={"center"}>
-							<Heading fontSize={"4xl"} textAlign={"center"}>
-								Registra tu mascota
-							</Heading>
+							{value === "update" ? (
+								<Heading fontSize={"4xl"} textAlign={"center"}>
+									Edita tu mascota
+								</Heading>
+							) : (
+								<Heading fontSize={"4xl"} textAlign={"center"}>
+									Registra tu mascota
+								</Heading>
+							)}
 							<Text fontSize={"lg"} color={"gray.600"}>
 								Gracias por cuidar a los animales ✌️
 							</Text>
 						</Stack>
-						<Box
-							rounded={"lg"}
-							/*  bg={useColorModeValue('white', 'gray.700')} */
-							boxShadow={"lg"}
-							p={8}>
+						<Box rounded={"lg"} bg={"white"} boxShadow={"lg"} p={8}>
 							<Stack spacing={4}>
 								<HStack>
 									<Box>
@@ -171,11 +160,9 @@ export default function FormPostPet({ token }) {
 												focusBorderColor={"brand.green.300"}
 												fontFamily={"body"}
 												name="species"
+												value={input.species}
 												onChange={(e) => handlerChange(e)}>
-												<option
-													value="default"
-													name="especie"
-													key="defaultSpecies">
+												<option value="" name="especie" key="defaultSpecies">
 													Especie
 												</option>
 												<option value={"gato"} name="gato" key="cat">
@@ -197,11 +184,12 @@ export default function FormPostPet({ token }) {
 										<FormControl id="sex">
 											<Select
 												focusBorderColor={"brand.green.300"}
+												value={input.sex}
 												fontFamily={"body"}
 												name="sex"
 												key="sex"
 												onChange={(e) => handlerChange(e)}>
-												<option value="default" key="defaultSex">
+												<option value="" key="defaultSex">
 													Sexo
 												</option>
 												<option value="hembra" key="hembra">
@@ -223,11 +211,12 @@ export default function FormPostPet({ token }) {
 								<FormControl id="age" isRequired>
 									<Select
 										focusBorderColor={"brand.green.300"}
+										value={input.age}
 										fontFamily={"body"}
 										name="age"
 										key="age"
 										onChange={(e) => handlerChange(e)}>
-										<option value="default" key="defaultAge">
+										<option value="" key="defaultAge">
 											Edad
 										</option>
 										<option value="cachorro" key="cachorro">
@@ -247,11 +236,12 @@ export default function FormPostPet({ token }) {
 								<FormControl id="size" isRequired>
 									<Select
 										focusBorderColor={"brand.green.300"}
+										value={input.size}
 										fontFamily={"body"}
 										name="size"
 										key="size"
 										onChange={(e) => handlerChange(e)}>
-										<option value="default" key="defaultSize">
+										<option value="" key="defaultSize">
 											Tamaño
 										</option>
 										<option value="pequeño" key="pequeño">
@@ -271,11 +261,12 @@ export default function FormPostPet({ token }) {
 								<FormControl id="status" isRequired>
 									<Select
 										focusBorderColor={"brand.green.300"}
+										value={input.status}
 										fontFamily={"body"}
 										name="status"
 										key="status"
 										onChange={(e) => handlerChange(e)}>
-										<option value="default" key="defaultStatus">
+										<option value="" key="defaultStatus">
 											Estado
 										</option>
 										<option value="encontrado" key="encontrado">
@@ -295,6 +286,7 @@ export default function FormPostPet({ token }) {
 										Área:
 									</Text>
 									<Input
+										value={input.area}
 										type="text"
 										fontFamily={"body"}
 										name="area"
@@ -313,6 +305,7 @@ export default function FormPostPet({ token }) {
 										Detalles:
 									</Text>
 									<Input
+										value={input.detail}
 										fontFamily={"body"}
 										variant="flushed"
 										focusBorderColor={"brand.green.300"}
@@ -326,29 +319,12 @@ export default function FormPostPet({ token }) {
 									)}
 								</FormControl>
 
-								{/* <FormControl>
-									<Text fontFamily={"body"} fontSize="14px">
-										ID de Usuario:
-									</Text>
-									<Input
-										fontFamily={"body"}
-										variant="flushed"
-										focusBorderColor={"brand.green.300"}
-										placeholder="UUID del usuario.."
-										size="md"
-										onChange={(e) => handlerChange(e)}
-										name="userId"
-									/>
-									{inputError.userId && (
-										<Text className="text_inputError">{inputError.userId}</Text>
-									)}
-								</FormControl> */}
-
 								<FormControl>
 									<Text fontFamily={"body"} fontSize="14px">
 										Imagen:
 									</Text>
 									<Input
+										value={input.img}
 										type="text"
 										fontFamily={"body"}
 										name="img"
@@ -362,19 +338,35 @@ export default function FormPostPet({ token }) {
 									)}
 								</FormControl>
 								<Stack spacing={10} pt={2}>
-									<Button
-										onClick={(e) => [handlerSubmit(e), window.scrollTo(0, 0)]}
-										loadingText="Post mascota"
-										fontFamily={"body"}
-										size="lg"
-										bg={"orange.300"}
-										color={"white"}
-										_hover={{
-											bg: "orange.400",
-											/* color:"brand.green.100" */
-										}}>
-										Post mascota
-									</Button>
+									{value === undefined ? (
+										<Button
+											onClick={(e) => [handlerSubmit(e), window.scrollTo(0, 0)]}
+											loadingText="Post mascota"
+											fontFamily={"body"}
+											size="lg"
+											bg={"orange.300"}
+											color={"white"}
+											_hover={{
+												bg: "orange.400",
+												/* color:"brand.green.100" */
+											}}>
+											Post mascota
+										</Button>
+									) : (
+										<Button
+											onClick={(e) => [handlerSubmit(e), window.scrollTo(0, 0)]}
+											loadingText="Post mascota"
+											fontFamily={"body"}
+											size="lg"
+											bg={"orange.300"}
+											color={"white"}
+											_hover={{
+												bg: "orange.400",
+												/* color:"brand.green.100" */
+											}}>
+											Modificar mascota
+										</Button>
+									)}
 								</Stack>
 							</Stack>
 						</Box>
