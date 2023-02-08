@@ -28,6 +28,9 @@ import Banned from "./Componets/Banned/Banned";
 function App() {
 	const { getAccessTokenSilently } = useAuth0();
 	const [token, setToken] = useState("");
+	const loggedUser = localStorage.getItem("loggedUser");
+
+	const [usuario, setUsuario] = useState([]);
 
 	useEffect(() => {
 		const validator = async () => {
@@ -36,10 +39,8 @@ function App() {
 		};
 		validator();
 	}, [getAccessTokenSilently]);
-	const [usuario, setUsuario] = useState([]);
 
 	useEffect(() => {
-		const loggedUser = localStorage.getItem("loggedUser");
 		if (loggedUser) {
 			const logged = JSON.parse(loggedUser);
 			setUsuario(logged);
@@ -54,8 +55,7 @@ function App() {
 				<Route path="*" element={<NotFound />}></Route>
 			</Routes>
 		</div>
-	) : (
-		/*  </ChakraProvider> */
+	) : usuario[0]?.status === "admin" ? (
 		<div className="App">
 			<Routes>
 				<Route exact path="/login" element={<Login />}></Route>
@@ -82,8 +82,8 @@ function App() {
 				<Route exact path="/createUser" element={<FormPostUser />}></Route>
 				<Route
 					exact
-					path="/updateUser/:id"
-					element={<FormPostUser value={"update"} />}></Route>
+					path="/updateUser"
+					element={<FormPostUser id={usuario.id} value={"update"} />}></Route>
 				<Route
 					exact
 					path="/updateUser"
@@ -118,6 +118,57 @@ function App() {
 					exact
 					path="/dashboard/updateProduct"
 					element={<FormUpdateProduct />}></Route>
+				<Route path="*" element={<NotFound />}></Route>
+			</Routes>
+		</div>
+	) : (
+		/*  </ChakraProvider> */
+		<div className="App">
+			<Routes>
+				<Route exact path="/login" element={<Login />}></Route>
+				<Route
+					path="/shop/product/:productId"
+					element={<ProductDetail />}></Route>
+				<Route exact path="/shop/cart" element={<Cart />}></Route>
+
+				<Route exact path="/donate" element={<Donate />}></Route>
+				<Route
+					exact
+					path="/createPet"
+					element={<FormPostPet token={token} />}></Route>
+				<Route
+					exact
+					path="/updatePet/:id"
+					element={<FormPostPet token={token} value={"update"} />}></Route>
+				<Route exact path="/createAuth0" element={<CreateUserAuth0 />}></Route>
+				<Route exact path="/" element={<LandingPage />}></Route>
+				<Route exact path="/createUser" element={<FormPostUser />}></Route>
+				<Route
+					exact
+					path="/updateUser"
+					element={<FormPostUser id={usuario.id} value={"update"} />}></Route>
+				<Route
+					exact
+					path="/updateUser"
+					element={<FormPostUser value={"update"} />}></Route>
+				<Route exact path="/home" element={<Home />}></Route>
+				<Route exact path="/aboutUs" element={<AboutUs />}></Route>
+				<Route exact path="/pets/:paramsId" element={<Details />}></Route>
+				<Route
+					exact
+					path="/adoptions"
+					element={<Pets value={"adoptions"} />}></Route>
+				<Route
+					exact
+					path="/lostPets"
+					element={<Pets value={"lostPets"} />}></Route>
+				<Route exact path="/myPets" element={<MyPets />}></Route>
+				<Route exact path="/veterinary" element={<Veterinaries />}></Route>
+				<Route exact path="/shop" element={<Shop />}></Route>
+				<Route
+					exact
+					path="/veterinary/:paramsId"
+					element={<VetsDetails />}></Route>
 				<Route path="*" element={<NotFound />}></Route>
 			</Routes>
 		</div>

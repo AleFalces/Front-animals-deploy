@@ -473,3 +473,18 @@ export function deletePet(id) {
 		}
 	};
 }
+
+export function deletePetAdmin(id) {
+	return async function (dispatch) {
+		try {
+			const json = await axios.delete(`/pets/${id}`);
+			const json2 = await axios.get(`/pets`);
+			return dispatch({
+				type: GET_PETS,
+				payload: { allPets: json2.data },
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}

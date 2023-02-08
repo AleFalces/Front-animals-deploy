@@ -4,6 +4,7 @@ import { GiSittingDog } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getUserId } from "../../Redux/Actions";
 import {
@@ -199,7 +200,10 @@ export default function Simple() {
 								<MenuDivider />
 								{usuario.length ? (
 									<MenuList>
-										<MenuItem>Perfil</MenuItem>
+										<NavLink to="/updateUser">
+											<MenuItem>Modifica tus datos</MenuItem>
+										</NavLink>
+
 										<NavLink to="/myPets">
 											<MenuItem>Mis mascotas</MenuItem>
 										</NavLink>

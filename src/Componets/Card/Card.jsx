@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import "../Adoption/Cards.css";
 import {
@@ -27,23 +27,29 @@ import { useDisclosure } from "@chakra-ui/react";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { deletePet } from "../../Redux/Actions";
+import { deletePet, getUserId } from "../../Redux/Actions";
+
+import { handlerDeletePet } from "../../utils";
 
 const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 	const dispatch = useDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = React.useRef();
 	const navigate = useNavigate();
+	const [loggedUser] = JSON.parse(localStorage.getItem("loggedUser"));
 	function handlerNavigateUpdate(e) {
 		e.preventDefault();
 		navigate(`/updatePet/${id}`);
 	}
+
 	function handlerDeletePet(e, id) {
-		// FUNCION DELETE PONER EN EL BOTON X
 		e.preventDefault();
-		console.log("HANDLER DELETE PET!!!!!!!!!!!!!!!!!");
-		dispatch(deletePet(id));
+		dispatch(deletePet(id, loggedUser.id));
 	}
+	// useEffect(()=>{
+
+	// },[dispatch])
+
 	return (
 		<Box>
 			<Center py={6}>
@@ -51,20 +57,22 @@ const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 					maxW={"320px"}
 					w={"full"}
 					h={"450px"}
-					bg={useColorModeValue("white", "gray.900")}
+					bg={"white"}
 					boxShadow={"2xl"}
 					rounded={"lg"}
 					p={6}
 					textAlign={"center"}>
 					{/* ↓↓↓↓↓↓   BUTTON DELETE PET FALTARIA UBICARLO MEJOR  ↓↓↓↓↓↓ */}
+
 					{value === "update" ? (
-						<Box paddingRight={3} p={2}>
+						<Box pr={"1rem"} className="boxButtonDelete">
 							<Button
 								fontFamily={"body"}
 								size="sm"
 								w="10%"
 								bg={"orange.300"}
 								color={"white"}
+								mb={"1.5rem"}
 								_hover={{
 									bg: "orange.400",
 								}}
@@ -96,8 +104,6 @@ const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 													onClose();
 												}}
 												ml={3}>
-												{" "}
-												{/* onClick={onClose}*/}
 												Borrar
 											</Button>
 										</AlertDialogFooter>
@@ -106,6 +112,7 @@ const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 							</AlertDialog>
 						</Box>
 					) : null}
+
 					{/* ↑↑↑↑↑↑↑↑   BUTTON DELETE PET FALTARIA UBICARLO MEJOR  ↑↑↑↑↑↑↑↑ */}
 
 					<Center>
@@ -158,23 +165,27 @@ const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 					) : null}
 
 					<Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-						<Badge
-							px={2}
-							py={1}
-							// bg={useColorModeValue("gray.50", "gray.800")}  /* Me rompe el renderizado condicional si dejo la funcion */
-							bg={"gray.100"}
-							fontWeight={"400"}>
+						<Badge px={2} py={1} bg={"gray.100"} fontWeight={"400"}>
 							{area}
 						</Badge>
 					</Stack>
 
 					{/*       ↓↓↓↓↓↓↓↓   BOTON EDITAR   ↓↓↓↓↓↓↓↓       */}
 					{value === "update" ? (
-						<button
-							className="modifyButton"
+						<Button
+							fontFamily={"body"}
+							size="lg"
+							bg={"orange.300"}
+							color={"white"}
+							w="30%"
+							mt="1rem"
+							_hover={{
+								bg: "orange.400",
+								/* color:"brand.green.100" */
+							}}
 							onClick={(e) => handlerNavigateUpdate(e)}>
 							Editar
-						</button>
+						</Button>
 					) : null}
 					<Stack mt={4} direction={"column"} spacing={4}>
 						<Center></Center>

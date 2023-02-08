@@ -1,9 +1,19 @@
 import React from "react";
 import PetCard from "./Cards/PetCard";
-import { SimpleGrid, Center } from "@chakra-ui/react";
+import { SimpleGrid} from "@chakra-ui/react";
+import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ShowPets({ pets }) {
-	console.log(pets);
+	// console.log("OBJ PETS",pets);
+	// const dispatch = useDispatch()
+	const pets2 = useSelector((state)=> state.allPets)
+	const user = useSelector((state)=> state.user)
+
+	useEffect(()=>{
+
+	},[pets2, user])
 	return (
 		<SimpleGrid columns={[1, 1, 2, 3]} spacing="40px">
 			{pets.map((pet) => (
