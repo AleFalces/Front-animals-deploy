@@ -57,7 +57,7 @@ const Details = () => {
 	const { paramsId } = useParams();
 	const Det = useSelector((state) => state.Detail);
 	// const userNumber = useSelector(state)=> state.
-	const userNumber = 543513470210;
+	const userNumber = 543534787713;
 
 	useEffect(() => {
 		dispatch(petDetails(paramsId));

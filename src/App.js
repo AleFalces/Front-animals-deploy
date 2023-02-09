@@ -64,10 +64,6 @@ function App() {
 					element={<ProductDetail />}></Route>
 				<Route exact path="/shop/cart" element={<Cart />}></Route>
 				<Route exact path="/banned" element={<Banned />}></Route>
-				<Route
-					exact
-					path="/dashboard"
-					element={<DashboardAdmin token={token} />}></Route>
 				<Route exact path="/donate" element={<Donate />}></Route>
 				<Route
 					exact
@@ -118,6 +114,10 @@ function App() {
 					exact
 					path="/dashboard/updateProduct"
 					element={<FormUpdateProduct />}></Route>
+				<Route
+					exact
+					path="/dashboard"
+					element={<DashboardAdmin token={token} />}></Route>
 				<Route path="*" element={<NotFound />}></Route>
 			</Routes>
 		</div>
@@ -130,7 +130,7 @@ function App() {
 					path="/shop/product/:productId"
 					element={<ProductDetail />}></Route>
 				<Route exact path="/shop/cart" element={<Cart />}></Route>
-
+				<Route exact path="/banned" element={<Banned />}></Route>
 				<Route exact path="/donate" element={<Donate />}></Route>
 				<Route
 					exact

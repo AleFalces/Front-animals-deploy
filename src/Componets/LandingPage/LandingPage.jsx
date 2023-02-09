@@ -75,7 +75,7 @@ const avatars = [
 const LandingPage = () => {
 	return (
 		<Box bg="brand.green.100">
-			<Box position={"relative"} vH="100%" vW="100%">
+			<Box position={"relative"} h="100vh" v="100vw">
 				<Container
 					as={SimpleGrid}
 					maxW={"7xl"}

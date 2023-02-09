@@ -27,6 +27,7 @@ import {
 	UPDATE_USER,
 	MODIFY_PRODUCT,
 	SET_IMAGE,
+	UPDATE_VET,
 } from "../ActionTypes";
 
 const initialState = {

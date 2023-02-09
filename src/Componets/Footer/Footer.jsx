@@ -85,95 +85,141 @@ export default function LargeWithNewsletter() {
 			w={"100%"}
 			bottom={0}>
 			<Container as={VStack} maxW={"6xl"} py={10}>
-				<SimpleGrid
-					templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
-					spacing={5}>
-					<Stack spacing={6}>
-						<Box>
-							<Logo color={useColorModeValue("gray.700", "white")} />
-						</Box>
-						<Text fontSize={"sm"} display="flex">
-							© 2023 Buddy ONG. All rights reserved
-						</Text>
-						<Stack direction={"row"} spacing={6}>
-							<SocialButton label={"Twitter"} href={"#"}>
-								<FaTwitter />
-							</SocialButton>
-							<SocialButton label={"YouTube"} href={"#"}>
-								<FaYoutube />
-							</SocialButton>
-							<SocialButton label={"Instagram"} href={"#"}>
-								<FaInstagram />
-							</SocialButton>
+				<Center>
+					<SimpleGrid columns={{ sm: "1", md: "3", lg: "4" }} spacing={5}>
+						<Stack spacing={6}>
+							<Box>
+								<Logo color={useColorModeValue("gray.700", "white")} />
+							</Box>
+							<Text fontSize={"md"} display="flex">
+								© 2023 Buddy ONG. All rights reserved
+							</Text>
+							<Stack direction={"row"} spacing={6}>
+								<SocialButton label={"Twitter"} href={"#"}>
+									<FaTwitter />
+								</SocialButton>
+								<SocialButton label={"YouTube"} href={"#"}>
+									<FaYoutube />
+								</SocialButton>
+								<SocialButton label={"Instagram"} href={"#"}>
+									<FaInstagram />
+								</SocialButton>
+							</Stack>
 						</Stack>
-					</Stack>
-					<Stack align={"flex-start"}>
-						<ListHeader>Company</ListHeader>
-						<Link href={"#"}>About us</Link>
-						<Link href={"#"}>Blog</Link>
-						<Link href={"#"}>Contact us</Link>
-						<Link href={"#"}>Pricing</Link>
-						<Link href={"#"}>Testimonials</Link>
-					</Stack>
-					<Stack align={"flex-start"}>
-						<ListHeader fontWeight="extrabold">LinkedIn</ListHeader>
-						<Link href={"https://www.linkedin.com/in/m-g-maceira/"} isExternal>
-							Mariana Maceira
-						</Link>
-						<Link href={"https://www.linkedin.com/in/lauracolof/"} isExternal>
-							Maria Laura Colo
-						</Link>
-						<Link
-							href={"https://www.linkedin.com/in/ignacio-coria-de-bernardi/"}
-							isExternal>
-							Ignacio Coria
-						</Link>
-						<Link href={"#"}>Alexis Falces</Link>
-						<Link
-							href={"https://www.linkedin.com/in/julian-navarro-b25938247/"}
-							isExternal>
-							Julian Navarro
-						</Link>
-						<Link href={"https://www.linkedin.com/in/lucho47-dev/"} isExternal>
-							Luciano Navarro
-						</Link>
-						<Link
-							href={"https://www.linkedin.com/in/magdalena-aliaga-bb239698/"}
-							isExternal>
-							Magdalena Aliaga
-						</Link>
-						<Link href={"https://www.linkedin.com/in/andres-salom/"} isExternal>
-							Andres Salom
-						</Link>
-					</Stack>
-					<Stack align={"flex-start"} spacing={6} px={10}>
-						<ListHeader>Proyecto</ListHeader>
-						<Wrap spacing={"50x"}>
-							<WrapItem>
-								<Center w="300px" p={"20px"}>
-									{profiles1?.map((photos) => (
-										<Avatar
-											size={"lg"}
-											borderBlockEndColor={"brand.orange"}
-											src={photos}
-										/>
-									))}
-								</Center>
-							</WrapItem>
-							<WrapItem>
-								<Center w="300px">
-									{profiles2?.map((photos) => (
-										<Avatar
-											size={"lg"}
-											borderBlockEndColor={"brand.orange"}
-											src={photos}
-										/>
-									))}
-								</Center>
-							</WrapItem>
-						</Wrap>
-					</Stack>
-				</SimpleGrid>
+						<Stack>
+							<ListHeader>Company</ListHeader>
+							<Link href={"#"}>About us</Link>
+							<Link href={"#"}>Blog</Link>
+							<Link href={"#"}>Contact us</Link>
+							<Link href={"#"}>Pricing</Link>
+							<Link href={"#"}>Testimonials</Link>
+						</Stack>
+						<Stack>
+							<ListHeader fontWeight="extrabold">LinkedIn</ListHeader>
+							<Link
+								href={"https://www.linkedin.com/in/m-g-maceira/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Mariana Maceira
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/lauracolof/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Maria Laura Colo
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/ignacio-coria-de-bernardi/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Ignacio Coria
+							</Link>
+							<Link
+								href={
+									"https://www.linkedin.com/in/alexis-falces-95b892252/%22%7D"
+								}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Alexis Falces
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/julian-navarro-b25938247/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Julian Navarro
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/lucho47-dev/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Luciano Navarro
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/magdalena-aliaga-bb239698/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Magdalena Aliaga
+							</Link>
+							<Link
+								href={"https://www.linkedin.com/in/andres-salom/"}
+								isExternal
+								_hover={{
+									fontWeight: "bold",
+									color: "orange.400",
+								}}>
+								Andres Salom
+							</Link>
+						</Stack>
+						<Stack align={"flex-start"} spacing={6} px={10}>
+							<ListHeader>Proyecto</ListHeader>
+							<Wrap spacing={"1rem"}>
+								<WrapItem>
+									<Center w="16rem" p={"20px"}>
+										{profiles1?.map((photos) => (
+											<Avatar
+												size={"lg"}
+												borderBlockEndColor={"brand.orange"}
+												src={photos}
+											/>
+										))}
+									</Center>
+								</WrapItem>
+								<WrapItem>
+									<Center w="16rem">
+										{profiles2?.map((photos) => (
+											<Avatar
+												size={"lg"}
+												borderBlockEndColor={"brand.orange"}
+												src={photos}
+											/>
+										))}
+									</Center>
+								</WrapItem>
+							</Wrap>
+						</Stack>
+					</SimpleGrid>
+				</Center>
 			</Container>
 		</Box>
 	);

@@ -26,6 +26,7 @@ import {
 	MODIFY_PRODUCT,
 	SET_IMAGE,
 	DELETE_PET,
+	UPDATE_VET,
 } from "../ActionTypes";
 import { header } from "../../utils";
 import axios from "axios";
@@ -485,6 +486,19 @@ export function deletePetAdmin(id) {
 			});
 		} catch (error) {
 			console.log(error);
+		}
+	};
+}
+
+export function updateVet(vetId, formInput) {
+	return async function (dispatch) {
+		try {
+			await axios.put(`/veterinary/${vetId}`, formInput);
+			dispatch({
+				type: UPDATE_VET,
+			});
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 }

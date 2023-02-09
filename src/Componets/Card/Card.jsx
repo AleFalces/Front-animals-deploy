@@ -33,10 +33,17 @@ import { handlerDeletePet } from "../../utils";
 
 const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 	const dispatch = useDispatch();
+	const [usuario, setUsuario] = useState([]);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = React.useRef();
 	const navigate = useNavigate();
-	const [loggedUser] = JSON.parse(localStorage.getItem("loggedUser"));
+	useEffect(() => {
+		const loggedUser = localStorage.getItem("loggedUser");
+		if (loggedUser) {
+			const logged = JSON.parse(loggedUser);
+			setUsuario(logged);
+		}
+	}, []);
 	function handlerNavigateUpdate(e) {
 		e.preventDefault();
 		navigate(`/updatePet/${id}`);
@@ -44,7 +51,7 @@ const Card = ({ data: { id, size, img, sex, species, age, area }, value }) => {
 
 	function handlerDeletePet(e, id) {
 		e.preventDefault();
-		dispatch(deletePet(id, loggedUser.id));
+		dispatch(deletePet(id, usuario[0]?.id));
 	}
 	// useEffect(()=>{
 

@@ -20,10 +20,13 @@ const Donate = () => {
 	const payMp = async (e) => {
 		const value = e.target.value;
 		const unit_price = parseInt(value);
+		const donation = {
+			unit_price: unit_price,
+			title: "Gracias por su colaboración",
+		};
 		axios
 			.post(`/donation`, {
-				unit_price: unit_price,
-				title: "Gracias por su colaboración",
+				donation,
 			})
 			.then((response) => {
 				window.open(response.data, "_blank");
@@ -34,11 +37,11 @@ const Donate = () => {
 	};
 
 	const subscription = async () => {
-		const user = JSON.parse(window.localStorage.getItem("loggedUser"));
-		const email = user.map((e) => e.email);
+		// const user = JSON.parse(window.localStorage.getItem("loggedUser"));
+		// const email = user.map((e) => e.email);
 		axios
 			.post(`/donation/subscription`, {
-				email: email[0],
+				email: "test_user_1305654611@testuser.com",
 			})
 			.then((response) => {
 				console.log("LINK" + response.data);

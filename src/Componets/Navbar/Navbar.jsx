@@ -44,6 +44,11 @@ export default function Simple() {
 			setUsuario(logged);
 		}
 	}, []);
+
+	// if (!userInfo?.length) {
+	// 	dispatch(getUserId(usuario[0]?.id));
+	// }
+
 	useEffect(() => {
 		dispatch(getUserId(usuario[0]?.id)); //del localStorage me traigo la info del usuario, desde su posicion 0 de array, por eso le pregunto si tiene algo con el "?", si tiene algo dentro que me traiga su id
 	}, [dispatch, usuario]);
@@ -52,8 +57,10 @@ export default function Simple() {
 		localStorage.removeItem("loggedUser");
 		logout();
 	};
+
 	const userPhone = (e) => {
 		e.preventDefault();
+		console.log(userInfo);
 		if (userInfo[0]?.phone === "123456789") {
 			navigate("/updateUser");
 			alert("Actualiza tu telefono para publicar");
@@ -62,10 +69,16 @@ export default function Simple() {
 		}
 	};
 
+	const userAuth = (e) => {
+		e.preventDefault();
+		alert("Para publicar tu mascota Ingresa tu usuario");
+		navigate("/");
+	};
+
 	return (
 		<>
-			<Box bg="brand.green.100" px={100} py="10px">
-				<Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+			<Box bg="brand.green.100" px={"2rem"} py="2rem">
+				<Flex h={16} alignItems={"center"} justifyContent={"space-evenly"}>
 					<IconButton
 						size={"md"}
 						icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -79,9 +92,12 @@ export default function Simple() {
 								<Image
 									src={logo}
 									// alt="Dan Abramov"
-									boxSize="70px"
+									boxSize="6rem"
 									mx="2rem"
-									mt="1rem"
+									my="1rem"
+									_hover={{
+										opacity: "0.5",
+									}}
 								/>
 							</NavLink>
 						</Box>
@@ -90,7 +106,7 @@ export default function Simple() {
 							as={"nav"}
 							spacing={8}
 							display={{ base: "none", md: "flex" }}
-							padding="140px">
+							padding="3rem">
 							<NavLink
 								px={2}
 								py={1}
@@ -101,7 +117,15 @@ export default function Simple() {
 								}}
 								to="/aboutUs"
 								variant="custom">
-								<Text fontFamily={"body"}>Nosotros</Text>
+								<Text
+									fontSize="1.3rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Nosotros
+								</Text>
 							</NavLink>
 							<NavLink
 								px={2}
@@ -109,11 +133,19 @@ export default function Simple() {
 								rounded={"md"}
 								_hover={{
 									textDecoration: "none",
-									bg: useColorModeValue("gray.200", "gray.700"),
+									color: "brand.green.300",
 								}}
 								to="/donate"
 								variant="custom">
-								<Text fontFamily={"body"}>Donaciones</Text>
+								<Text
+									fontSize="1.3rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Donaciones
+								</Text>
 							</NavLink>
 							<NavLink
 								px={2}
@@ -125,21 +157,61 @@ export default function Simple() {
 								}}
 								to="/shop"
 								variant="custom">
-								<Text fontFamily={"body"}>Tienda</Text>
+								<Text
+									fontSize="1.3rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Tienda
+								</Text>
 							</NavLink>
-							<NavLink
-								onClick={(e) => userPhone(e)}
-								px={2}
-								py={1}
-								rounded={"md"}
-								_hover={{
-									textDecoration: "none",
-									bg: useColorModeValue("gray.200", "gray.700"),
-								}}
-								to="/createPet"
-								variant="custom">
-								<Text fontFamily={"body"}>Publicar Mascota</Text>
-							</NavLink>
+							{!usuario?.length ? (
+								<NavLink
+									onClick={(e) => userAuth(e)}
+									px={2}
+									py={1}
+									rounded={"md"}
+									_hover={{
+										textDecoration: "none",
+										// bg: useColorModeValue("gray.200", "gray.700"),
+									}}
+									to="/createPet"
+									variant="custom">
+									<Text
+										fontSize="1.3rem"
+										fontFamily={"body"}
+										_hover={{
+											fontWeight: "bold",
+											color: "brand.green.300",
+										}}>
+										Publicar Mascota
+									</Text>
+								</NavLink>
+							) : (
+								<NavLink
+									onClick={(e) => userPhone(e)}
+									px={2}
+									py={1}
+									rounded={"md"}
+									_hover={{
+										textDecoration: "none",
+										// bg: useColorModeValue("gray.200", "gray.700"),
+									}}
+									to="/createPet"
+									variant="custom">
+									<Text
+										fontSize="1.3rem"
+										fontFamily={"body"}
+										_hover={{
+											fontWeight: "bold",
+											color: "brand.green.300",
+										}}>
+										Publicar Mascota
+									</Text>
+								</NavLink>
+							)}
 							<NavLink
 								px={2}
 								py={1}
@@ -150,12 +222,23 @@ export default function Simple() {
 								}}
 								to="/veterinary"
 								variant="custom">
-								<Text fontFamily={"body"}>Veterinarias</Text>
+								<Text
+									fontSize="1.3rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Veterinarias
+								</Text>
 							</NavLink>
 
 							<Menu>
-								<MenuButton>
-									<GiSittingDog size="20px" />
+								<MenuButton
+									_hover={{
+										color: "orange.400",
+									}}>
+									<GiSittingDog size="2rem" />
 								</MenuButton>
 								<MenuList>
 									<MenuItem>
@@ -181,7 +264,7 @@ export default function Simple() {
 								cursor={"pointer"}
 								minW={0}>
 								<Avatar
-									size={"sm"}
+									size={"md"}
 									borderBlockEndColor={"brand.orange"}
 									src={
 										isAuthenticated
@@ -221,26 +304,66 @@ export default function Simple() {
 				</Flex>
 
 				{isOpen ? (
-					<Box pb={4} display={{ md: "none" }}>
-						<Stack as={"nav"} p={4} spacing={4} alignItems={"center"}>
+					<Box pb={1} display={{ md: "none" }}>
+						<Stack as={"nav"} p={5} spacing={6} alignItems={"center"}>
 							<NavLink to="/aboutUs">
-								<Text fontFamily={"body"}>Nosotros</Text>
+								<Text
+									fontSize="1.2rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Nosotros
+								</Text>
 							</NavLink>
 							<NavLink to="/donate">
-								<Text fontFamily={"body"}>Donaciones</Text>
+								<Text
+									fontSize="1.2rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Donaciones
+								</Text>
 							</NavLink>
 							<NavLink to="/shop">
-								<Text fontFamily={"body"}>Tienda</Text>
+								<Text
+									fontSize="1.2rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Tienda
+								</Text>
 							</NavLink>
 							<NavLink to="/createPet">
-								<Text fontFamily={"body"}>Publicar Mascota</Text>
+								<Text
+									fontSize="1.2rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Publicar Mascota
+								</Text>
 							</NavLink>
 							<NavLink to="/veterinary">
-								<Text fontFamily={"body"}>Veterinarias</Text>
+								<Text
+									fontSize="1.2rem"
+									fontFamily={"body"}
+									_hover={{
+										fontWeight: "bold",
+										color: "brand.green.300",
+									}}>
+									Veterinarias
+								</Text>
 							</NavLink>
 							<Menu>
 								<MenuButton>
-									<GiSittingDog size="20px" />
+									<GiSittingDog size="2rem" />
 								</MenuButton>
 								<MenuList>
 									<MenuItem>

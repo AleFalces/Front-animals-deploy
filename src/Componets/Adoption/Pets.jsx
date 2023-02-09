@@ -56,7 +56,7 @@ const Adoption = ({ value }) => {
 						</Center>
 					) : (
 						currentPets?.map((el) => (
-							<Link to={`/pets/${el.id}`} key={el.id}>
+							<Link to={`/pets/${el?.id}`} key={el?.id}>
 								<Card data={el} />
 							</Link>
 						))
