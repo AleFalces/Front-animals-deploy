@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import { User } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
@@ -100,9 +100,29 @@ const Login = () => {
 	return (
 		<>
 			{usuario.length > 0 ? (
-				<button className="btn btn-danger" onClick={() => cerrarSesion()}>
-					Cerrar Sesion
-				</button>
+				<div>
+					<Box py="1rem">
+						<Button
+							onClick={() => navegate("/home")()}
+							type="submit"
+							fontFamily={"body"}
+							size="lg"
+							bg={"orange.300"}
+							color={"white"}
+							w="40%"
+							px="3rem"
+							_hover={{
+								bg: "orange.400",
+							}}>
+							Volver a home
+						</Button>
+					</Box>
+					<Box py="1rem">
+						<button className="btn btn-danger" onClick={() => cerrarSesion()}>
+							Cerrar Sesion
+						</button>
+					</Box>
+				</div>
 			) : (
 				<div>
 					{" "}
