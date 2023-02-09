@@ -25,9 +25,9 @@ import {
 	SET_STATUS_USER,
 	UPDATE_PRODUCT,
 	UPDATE_USER,
+	UPDATE_VET,
 	MODIFY_PRODUCT,
 	SET_IMAGE,
-	UPDATE_VET,
 } from "../ActionTypes";
 
 const initialState = {
@@ -114,6 +114,7 @@ const RootReducer = (state = initialState, action) => {
 		case POST_USER:
 			return {
 				...state,
+				user: action.payload,
 			};
 		case POST_PRODUCT:
 			return {
@@ -253,6 +254,7 @@ const RootReducer = (state = initialState, action) => {
 		case DELETE_PET:
 			return {
 				...state,
+				user: action.payload,
 			};
 		default:
 			return state;

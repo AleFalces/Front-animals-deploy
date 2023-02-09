@@ -23,10 +23,10 @@ import {
 	ACTUAL_PAGE,
 	UPDATE_PRODUCT,
 	UPDATE_USER,
+	UPDATE_VET,
 	MODIFY_PRODUCT,
 	SET_IMAGE,
 	DELETE_PET,
-	UPDATE_VET,
 } from "../ActionTypes";
 import { header } from "../../utils";
 import axios from "axios";
@@ -169,17 +169,30 @@ export function postUser(formInput) {
 	};
 }
 
-export function updateUser(id, formInput) {
+export function updateUser(userID, formInput) {
 	return async function (dispatch) {
 		try {
-			console.log("Action updateUSER", id);
-			await axios.put(`/users/${id}`, formInput);
-			// const updatedProduct = await axios.get(`/products`)
+			console.log("Action updateUSER", userID);
+			await axios.put(`/users/${userID}`, formInput);
+
 			dispatch({
 				type: UPDATE_USER,
 			});
 		} catch (error) {
-			console.log(error);
+			console.log("Action updateUSER", userID, formInput);
+		}
+	};
+}
+
+export function updateVet(vetId, formInput) {
+	return async function (dispatch) {
+		try {
+			await axios.put(`/veterinary/${vetId}`, formInput);
+			dispatch({
+				type: UPDATE_VET,
+			});
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 }
@@ -378,7 +391,7 @@ export function updateProduct(id, formInput) {
 	return async function (dispatch) {
 		try {
 			console.log("Action updateProduc", id);
-			await axios.put(`/products/${id}`, formInput);
+			await axios.put(`$/products/${id}`, formInput);
 			// const updatedProduct = await axios.get(`/products`)
 			dispatch({
 				type: UPDATE_PRODUCT,
@@ -415,7 +428,7 @@ export function postOrUpdatePet(formInput, value, petId) {
 					localStorage.getItem("loggedUser")
 				)[0];
 				console.log("USERLOCALSTORAGE: ", userLocalstorage);
-				let json = await axios.put(`/pets/${petId}`, formInput);
+				let json = await axios.put(`$/pets/${petId}`, formInput);
 				return dispatch({
 					type: UPDATE_PET,
 				});
@@ -462,12 +475,14 @@ export function setImageAsync(obj) {
 		}
 	};
 }
-export function deletePet(id) {
+export function deletePet(idPet, idUser) {
 	return async function (dispatch) {
 		try {
-			const json = await axios.delete(`/${id}`);
+			const json = await axios.delete(`/pets/${idPet}`);
+			const json2 = await axios.get(`/users/${idUser}`);
 			return dispatch({
 				type: DELETE_PET,
+				payload: json2.data,
 			});
 		} catch (error) {
 			console.log(error);
@@ -486,19 +501,6 @@ export function deletePetAdmin(id) {
 			});
 		} catch (error) {
 			console.log(error);
-		}
-	};
-}
-
-export function updateVet(vetId, formInput) {
-	return async function (dispatch) {
-		try {
-			await axios.put(`/veterinary/${vetId}`, formInput);
-			dispatch({
-				type: UPDATE_VET,
-			});
-		} catch (error) {
-			console.log(error.message);
 		}
 	};
 }
