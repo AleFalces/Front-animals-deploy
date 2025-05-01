@@ -6,7 +6,7 @@ Este repositorio contiene el **frontend** de la aplicación, desarrollado con Re
 
 ## 🚀 Deploy online
 
-🔗 *[Próximamente]*
+🔗 https://buddyong.vercel.app/
 
 ## 🛠️ Tecnologías utilizadas
 
